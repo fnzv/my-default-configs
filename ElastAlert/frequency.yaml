@@ -1,0 +1,66 @@
+# (Optional)
+# Elasticsearch host
+es_host: your-elasticsearch-host-ip
+
+# (Optional)
+# Elasticsearch port
+es_port: 9200
+
+# (OptionaL) Connect with SSL to elasticsearch
+#use_ssl: True
+
+# (Optional) basic-auth username and password for elasticsearch
+#es_username: user
+#es_password: yourpassword
+#from_addr: "esalert@domain.it"
+#smtp_host: smtp-mail-server
+# (Required)
+# Rule name, must be unique
+name: Alert Name
+alert_text_type: alert_text_only #comment here if you want entire l'alert content
+# (Required)
+# Type of alert.
+# the frequency rule type alerts when num_events events occur with timeframe time
+type: frequency
+
+# (Required)
+# Index to search, wildcard supported
+index: ES-index-*
+# (Required, frequency specific)
+
+#aggregation: minutes: 5 to aggregate matches <
+# Alert when this many documents matching the query occur within a timeframe
+num_events: 1
+# (Required, frequency specific)
+# num_events must occur within this amount of time to trigger an alert
+timeframe:
+  hours: 10 
+
+realert:  
+  minutes: 0
+# (Required)
+# A list of elasticsearch filters used for find events
+# These filters are joined with AND and nested in a filtered query
+# For more info: http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/query-dsl.html
+filter:
+- term:
+    beat.hostname: "server-01"
+
+# (Required)
+# The alert is use when a match is found
+alert:
+#- "email"
+#- "slack"
+- "telegram"
+# (required, email specific)
+# a list of email addresses to send alerts to
+email:
+- "youremail@domain.it"
+#
+#slack:  #for slack messagges 
+#slack_webhook_url: slack-webhook-url
+
+telegram:
+telegram_bot_token: "123456789:verylongtelegram_token" # your telegram bot token
+#
+telegram_room_id: "1234567" # your telegram room ID
